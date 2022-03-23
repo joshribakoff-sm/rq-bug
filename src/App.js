@@ -8,10 +8,10 @@ function App() {
     "foo",
     async () => {
       console.log('query ran')
-      await new Promise((res) => setTimeout(res, 1000));
+      await new Promise((res) => setTimeout(res, 10000));
       return () => "foo" + Math.random();
     },
-    { suspense: true, staleTime: 0, cacheTime: 0 }
+    // no suspense?
   );
   console.log(result);
   return (
