@@ -7,6 +7,7 @@ function App() {
   const result = useQuery(
     "foo",
     async () => {
+      console.log('query ran')
       await new Promise((res) => setTimeout(res, 1000));
       return () => "foo" + Math.random();
     },
