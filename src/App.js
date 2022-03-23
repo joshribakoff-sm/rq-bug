@@ -11,7 +11,7 @@ function App() {
       await new Promise((res) => setTimeout(res, 1000));
       return () => "foo" + Math.random();
     },
-    { suspense: true }
+    { suspense: true, staleTime: 0, cacheTime: 0 }
   );
   console.log(result);
   return (
