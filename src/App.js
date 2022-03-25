@@ -1,18 +1,31 @@
 import "./App.css";
 import { useQuery } from "react-query";
-import { useTransition } from "react";
+import { useMemo, useTransition, useState, useEffect } from "react";
 
 function App() {
+  const [variables, setVariables] = useState(() => Math.random());
   const [isPending, startTransition] = useTransition();
+  
   const result = useQuery(
-    "foo",
+    ["foo", variables],
     async () => {
-      console.log('query ran')
+      console.log("query ran", variables);
       await new Promise((res) => setTimeout(res, 1000));
-      return () => "foo" + Math.random();
+      return () => "foo" + variables;
     },
-    { suspense: true, staleTime: 0, cacheTime: 0 }
+    { suspense: true, staleTime: Infinity, cacheTime: 0 }
   );
+  
+  const data = useMemo(() => {
+    console.log("data changed", result.data);
+    return result.data;
+  }, [result.data]);
+  
+  useEffect(() => {
+    console.log("mount");
+    return () => console.log("unmount");
+  });
+
   console.log(result);
   return (
     <div className="App">
@@ -20,7 +33,7 @@ function App() {
       <button
         onClick={() => {
           startTransition(() => {
-            result.refetch();
+            setVariables(Math.random());
           });
         }}
       >
