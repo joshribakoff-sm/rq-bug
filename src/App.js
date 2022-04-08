@@ -1,23 +1,26 @@
 import "./App.css";
-import { useQueryErrorResetBoundary,useQuery } from "react-query";
-import { useMemo, useTransition, useState, useEffect, Suspense } from "react";
-import {ErrorBoundary} from 'react-error-boundary'
+import { useQueryErrorResetBoundary, useQuery } from "react-query";
+import { useState, Suspense } from "react";
+import { ErrorBoundary } from "react-error-boundary";
 
 function App() {
-  const { reset } = useQueryErrorResetBoundary()
-  const [resetKey, setResetKey] = useState(0)
+  const { reset } = useQueryErrorResetBoundary();
+  const [resetKey, setResetKey] = useState(0);
   return (
     <div className="App">
       <Suspense fallback={<>loading fallback</>}>
-        <ErrorBoundary fallback={<>error fallback</>} resetKeys={[resetKey]}>
-        <ComponentWithData />
+        <ErrorBoundary fallback={<>error fallback</>} resetKeys={[resetKey]} onReset={reset}>
+          <ComponentWithData />
         </ErrorBoundary>
       </Suspense>
       <br />
-      <button onClick={()=>{
-        reset()
-        return setResetKey(Math.random());
-      }}>reset error boundary</button>
+      <button
+        onClick={() => {
+          return setResetKey(key => key === 0 ? 1 : 0);
+        }}
+      >
+        reset error boundary
+      </button>
     </div>
   );
 }
@@ -27,10 +30,10 @@ function ComponentWithData() {
     "foo",
     async () => {
       console.log("query ran");
-      return Promise.reject('rejected by Anthony Davis')
+      return Promise.reject("rejected by Anthony Davis");
     },
-    { retry: false, staleTime: Infinity, cacheTime: 0 }
-  )
+    { retry: false, staleTime: Infinity, cacheTime: Infinity }
+  );
   console.log(result);
 }
 
