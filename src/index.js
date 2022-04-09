@@ -1,3 +1,4 @@
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "react-query";
 import React, { Suspense } from "react";
 import ReactDOM from "react-dom/client";
@@ -18,11 +19,13 @@ const queryClient = new QueryClient({
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   // <React.StrictMode>
+  <BrowserRouter>
     <QueryClientProvider client={queryClient}>
-      <Suspense fallback={<h1>Loading</h1>}>
-        <App />
-      </Suspense>
+      <Routes>
+        <Route path="/" element={<App />} />
+      </Routes>
     </QueryClientProvider>
+  </BrowserRouter>
   // </React.StrictMode>
 );
 

@@ -38,7 +38,7 @@ function ComponentWithData({v}) {
   const result = useQuery(
     ['foo', v],
     async () => {
-      console.log('query ran');
+      console.log('query ran', v);
       if (v === 0)
         return Promise.reject('rejected by Anthony Davis');
       return Promise.resolve('resolved by James Harden');
@@ -46,6 +46,8 @@ function ComponentWithData({v}) {
     { retry: false, staleTime: Infinity, cacheTime: Infinity }
   );
   console.log(result);
+  return <>{result.data}</>
 }
+
 
 export default App;
